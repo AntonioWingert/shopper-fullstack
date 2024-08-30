@@ -1,0 +1,40 @@
+networks:
+  app-network:
+    driver: bridge
+services:
+  db:
+    container_name: database
+    image: mysql:8.1
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    command: npm run start:dev
+    env_file:
+      - .env
+    links: 
+      - db
+    networks:
+      - app-network
+
+volumes:
+  db:
+  

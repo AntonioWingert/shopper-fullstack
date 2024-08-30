@@ -1,0 +1,23 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:root@db:3306/database"
+}
+
+model Measures {
+  id            String   @id @default(uuid()) @db.VarChar(36)
+  measure_value Int
+  measure_date  DateTime @default(now())
+  measure_type  String   @default("WATER")
+  customer_code String
+  verified      Boolean  @default(false)
+}
